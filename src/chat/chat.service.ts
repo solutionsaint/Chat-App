@@ -1,36 +1,37 @@
-// chat.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Chat, ChatDocument } from '../schemas/chat.schema';
 import { CreateChatDto } from '../dto/create-chat.dto';
+import { SendMessageDto } from '../dto/send-message.dto';
 
 @Injectable()
 export class ChatService {
   constructor(@InjectModel(Chat.name) private chatModel: Model<ChatDocument>) {}
 
-  // Create a new chat
   async createChat(createChatDto: CreateChatDto): Promise<Chat> {
-    const createdChat = new this.chatModel(createChatDto);
-    return createdChat.save();
+    const newChat = new this.chatModel(createChatDto);
+    return newChat.save();
   }
 
-  // Add a message to a chat
-  async addMessage(chatId: string, sender: string, message: string): Promise<Chat> {
-    return this.chatModel.findByIdAndUpdate(
-      chatId,
-      { $push: { messages: { sender, message, timestamp: new Date() } } },
-      { new: true }
-    );
+  async addMessage(sendMessageDto: SendMessageDto): Promise<Chat> {
+    const chat = await this.chatModel.findOne({ chatId: sendMessageDto.chatId });
+    if (chat) {
+      chat.messages.push({
+        sender: sendMessageDto.sender,
+        message: sendMessageDto.message,
+        timestamp: new Date(),
+      });
+      return chat.save();
+    }
+    throw new Error('Chat not found');
   }
 
-  // Get all chats
   async getAllChats(): Promise<Chat[]> {
     return this.chatModel.find().exec();
   }
 
-  // Get a specific chat
-  async getChat(chatId: string): Promise<Chat> {
-    return this.chatModel.findById(chatId).exec();
+  async getChat(chatId: string): Promise<Chat | null> {
+    return this.chatModel.findOne({ chatId }).exec();
   }
 }

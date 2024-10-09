@@ -1,5 +1,11 @@
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
+
 export class CreateChatDto {
-    readonly chatId: string;
-    readonly participants: string[];
-  }
-  
+  @IsNotEmpty()
+  @IsString()
+  chatId: string;
+
+  @IsArray()
+  @IsNotEmpty({ each: true })
+  participants: string[];
+}
