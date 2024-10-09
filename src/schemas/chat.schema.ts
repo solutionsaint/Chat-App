@@ -9,10 +9,10 @@ export class Chat {
   @Prop({ required: true })
   chatId: string;
 
-  @Prop({ type: [{ type: String }] }) // assuming participants are stored as an array of strings
+  @Prop({ type: [{ type: String }] })
   participants: string[];
 
-  @Prop({ type: [{ sender: String, message: String, timestamp: Date }] }) // Assuming a message structure
+  @Prop({ type: [{ sender: String, message: String, timestamp: Date }] })
   messages: { sender: string; message: string; timestamp: Date }[];
 }
 

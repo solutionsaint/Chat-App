@@ -1,23 +1,23 @@
-// chat.module.ts
+
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { JwtModule } from '@nestjs/jwt'; // Import JwtModule
+import { JwtModule } from '@nestjs/jwt'; 
 import { ChatService } from './chat.service';
 import { ChatGateway } from './chat.gateway';
 import { Chat, ChatSchema } from '../schemas/chat.schema';
-import { ConfigModule, ConfigService } from '@nestjs/config'; // Import ConfigModule and ConfigService
+import { ConfigModule, ConfigService } from '@nestjs/config'; 
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]),
-    ConfigModule, // Import ConfigModule to access environment variables
+    ConfigModule, 
     JwtModule.registerAsync({
-      imports: [ConfigModule], // Import ConfigModule
+      imports: [ConfigModule], 
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWT_SECRET'), // Get the JWT secret from the environment
-        signOptions: { expiresIn: '60s' }, // Optional: specify token expiration
+        secret: configService.get<string>('JWT_SECRET'), 
+        signOptions: { expiresIn: '60s' }, 
       }),
-      inject: [ConfigService], // Inject ConfigService to use in the factory
+      inject: [ConfigService], 
     }),
   ],
   providers: [ChatService, ChatGateway],

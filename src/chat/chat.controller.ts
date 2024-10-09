@@ -5,7 +5,7 @@ import { ChatService } from './chat.service';
 export class ChatController {
   constructor(private readonly chatService: ChatService) {}
 
-  // Endpoint to fetch all chats
+  
   @Get()
   async getAllChats() {
     return this.chatService.getAllChats();
