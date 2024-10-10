@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat Client</title>
+  <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+</head>
+<body>
+  <script>
+    const socket = io('ws://localhost:3000');
+
+    socket.on('connect', () => {
+      console.log('Connected to WebSocket server');
+
+
+      socket.emit('createChat', {
+        chatId: '12345',
+        participants: ['user1', 'user2']
+      });
+
+   
+      socket.on('chatCreated', (chat) => {
+        console.log('New chat created:', chat);
+      });
+
+      
+      socket.emit('sendMessage', {
+        chatId: '12345',
+        sender: 'user1',
+        message: 'Hello everyone!',
+        timestamp: new Date().toISOString()
+      });
+
+
+      socket.on('messageReceived', (chat) => {
+        console.log('Message received in chat:', chat);
+      });
+
+      socket.emit('getAllChats');
+
+      socket.on('allChats', (chats) => {
+        console.log('All chats:', chats);
+      });
+
+  
+      socket.emit('joinChat', { chatId: '12345' });
+
+      socket.on('chatHistory', (chat) => {
+        console.log('Chat history:', chat);
+      });
+    });
+
+    socket.on('disconnect', () => {
+      console.log('Disconnected from WebSocket server');
+    });
+  </script>
+</body>
+</html>

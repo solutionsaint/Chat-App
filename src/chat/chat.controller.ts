@@ -1,3 +1,4 @@
+// chat.controller.ts
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CreateChatDto } from '../dto/create-chat.dto';
@@ -28,7 +29,7 @@ export class ChatController {
 
   // Get a specific chat by chatId
   @Get(':chatId')
-  async getChat(@Param('chatId') chatId: string): Promise<Chat | null> {
+  async getChat(@Param('chatId') chatId: string): Promise<Chat> {
     return this.chatService.getChat(chatId);
   }
 }
