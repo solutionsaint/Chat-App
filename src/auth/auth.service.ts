@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { User } from '../schemas/user.schema';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { JwtService } from '@nestjs/jwt';
-import * as argon from 'argon2'; // Make sure to install argon2
+import * as argon from 'argon2'; 
 import { UserService } from '../users/user.service'; 
 @Injectable()
 export class AuthService {
@@ -27,12 +27,12 @@ export class AuthService {
   async login(email: string, password: string): Promise<{ accessToken: string }> {
     const user = await this.userModel.findOne({ email });
     if (!user) {
-      throw new Error('User not found'); // Handle this with a proper exception
+      throw new Error('User not found'); 
     }
 
     const isPasswordValid = await argon.verify(user.password, password);
     if (!isPasswordValid) {
-      throw new Error('Invalid password'); // Handle this with a proper exception
+      throw new Error('Invalid password'); 
     }
 
     const payload = { username: user.username, email: user.email };

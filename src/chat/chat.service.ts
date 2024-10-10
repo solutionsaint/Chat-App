@@ -1,4 +1,3 @@
-// chat.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chat, ChatDocument } from '../schemas/chat.schema';
